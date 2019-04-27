@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">TrackEat</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="namaLengkap">Nama Lengkap</string>
+    <string name="tanggalLahir">Tanggal Lahir</string>
+    <string name="jenisKelamin">Jenis Kelamin</string>
+    <string name="lakilaki">Laki-Laki</string>
+    <string name="perempuan">Perempuan</string>
+    <string name="tinggiBadan">Tinggi Badan</string>
+    <string name="beratBadan">Berat Badan</string>
+    <string name="confirmPassword">Konfirmasi Password</string>
+    <string name="register">Register</string>
 </resources>
