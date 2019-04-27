@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var mFirebaseAuth: FirebaseAuth
-//    private lateinit var mProgressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,6 +118,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    // Progress bar
     private fun startLoadingIndicator() {
         viewDimScreen.visibility = View.VISIBLE
         aviLoadingIndicatorView.smoothToShow()

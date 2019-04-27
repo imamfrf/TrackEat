@@ -12,7 +12,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.lmntrx.android.library.livin.missme.ProgressDialog
 import com.trackeat.imamf.trackeat.extension.toast
 import com.trackeat.imamf.trackeat.model.User
 import com.trackeat.imamf.trackeat.util.Constant
@@ -25,7 +24,6 @@ class RegisterActivity : AppCompatActivity() {
 
     private lateinit var mFirebaseAuth: FirebaseAuth
     private lateinit var mDatabaseReference: DatabaseReference
-//    private lateinit var mProgressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,6 +125,7 @@ class RegisterActivity : AppCompatActivity() {
                 TextUtils.isEmpty(tanggalLahir) || TextUtils.isEmpty(tinggiBadan) || TextUtils.isEmpty(beratBadan) || TextUtils.isEmpty(jenisKelamin))
     }
 
+    // Progress bar
     private fun startLoadingIndicator() {
         viewDimScreen.visibility = View.VISIBLE
         aviLoadingIndicatorView.smoothToShow()
