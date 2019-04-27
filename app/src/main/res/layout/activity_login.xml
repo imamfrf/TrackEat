@@ -199,6 +199,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:elevation="1dp"
         android:visibility="invisible"
         app:indicatorColor="@color/md_white_1000"
         app:indicatorName="BallPulseIndicator"
