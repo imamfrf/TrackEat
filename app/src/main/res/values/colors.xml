@@ -3,6 +3,7 @@
     <color name="colorPrimary">#6dd5ed</color>
     <color name="colorPrimaryDark">#31a3bb</color>
     <color name="colorAccent">#a8e063</color>
+    <color name="white_trans">#80FFFFFF</color>
 
     <!-- google's material design colours from
 http://www.google.com/design/spec/style/color.html#color-ui-color-palette -->
