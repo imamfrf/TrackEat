@@ -12,18 +12,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ibm.watson.developer_cloud.android.library.camera.CameraHelper;
 import com.ibm.watson.developer_cloud.service.security.IamOptions;
 import com.ibm.watson.developer_cloud.visual_recognition.v3.VisualRecognition;
 import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ClassifiedImages;
 import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ClassifyOptions;
+import com.timqi.sectorprogressview.ColorfulRingProgressView;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class HomeFragment extends android.support.v4.app.Fragment {
     private Button bt_scan;
@@ -31,13 +41,25 @@ public class HomeFragment extends android.support.v4.app.Fragment {
     private ConstraintLayout layout_pBar;
     private View viewDimScreen;
     private AVLoadingIndicatorView aviLoadingIndicatorView;
+    private ColorfulRingProgressView crpv;
+    private FirebaseDatabase db;
+    private FirebaseAuth auth;
+    private TextView tv_cal_consumed, tv_cal_needed, tv_percent;
+    private float cal_consumed = 0.0f;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final View inflate = inflater.inflate(R.layout.fragment_home, null);
 
+        //button
         bt_scan = inflate.findViewById(R.id.bt_scan);
+
+        //textview
+        tv_cal_consumed = inflate.findViewById(R.id.tv_cal_consumed);
+        tv_cal_needed = inflate.findViewById(R.id.tv_cal_need);
+        tv_percent = inflate.findViewById(R.id.tv_percent);
 
 //        layout_pBar = inflate.findViewById(R.id.layout_pBar);
 //        layout_pBar.setVisibility(View.GONE);
@@ -52,9 +74,59 @@ public class HomeFragment extends android.support.v4.app.Fragment {
             }
         });
 
+        //loading
         viewDimScreen = inflate.findViewById(R.id.viewDimScreen);
         viewDimScreen.setVisibility(View.GONE);
         aviLoadingIndicatorView = inflate.findViewById(R.id.aviLoadingIndicatorView);
+
+
+
+        //firebase
+        db = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
+
+        db.getReference("users").child(auth.getCurrentUser().getUid()).child("kebutuhanKalori")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        tv_cal_needed.setText(dataSnapshot.getValue().toString());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String formattedDate = df.format(c);
+        Log.d("tanggal", formattedDate);
+        db.getReference("users").child(auth.getCurrentUser().getUid()).child("daily").child(formattedDate)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        tv_cal_consumed.setText(dataSnapshot.getValue().toString());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+        float cal_consumed = Float.valueOf(tv_cal_consumed.getText().toString());
+        float cal_must = Float.valueOf(tv_cal_needed.getText().toString());
+
+        float percent = (cal_consumed/cal_must)*100;
+
+        //circle chart
+        crpv = inflate.findViewById(R.id.crpv);
+        //crpv.setPercent(75);
+        crpv.setStartAngle(0);
+        crpv.setPercent(percent);
+
+        tv_percent.setText(String.format("%.0f", percent));
 
         return inflate;
     }

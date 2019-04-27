@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#6dd5ed</color>
+    <color name="colorPrimary_trans">#806dd5ed</color>
     <color name="colorPrimaryDark">#31a3bb</color>
+    <color name="colorPrimaryDarker">#086d82</color>
     <color name="colorAccent">#a8e063</color>
     <color name="white_trans">#80FFFFFF</color>
 
@@ -278,7 +280,7 @@ http://www.google.com/design/spec/style/color.html#color-ui-color-palette -->
 
     <!--grey-->
     <color name="md_grey_50">#FAFAFA</color>
-    <color name="md_grey_100">#F5F5F5</color>
+    <color name="md_grey_100">#f5f5f5</color>
     <color name="md_grey_200">#EEEEEE</color>
     <color name="md_grey_300">#E0E0E0</color>
     <color name="md_grey_400">#BDBDBD</color>
