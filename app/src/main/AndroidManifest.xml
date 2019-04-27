@@ -21,9 +21,6 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ProfilActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -38,9 +35,6 @@
         <activity
             android:name=".FoodDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Main2Activity">
-
-        </activity>
     </application>
 
 </manifest>

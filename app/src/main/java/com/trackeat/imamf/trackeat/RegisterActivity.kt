@@ -19,6 +19,9 @@ import com.trackeat.imamf.trackeat.util.Constant.DEFAULT.DEFAULT_NOT_SET
 import com.trackeat.imamf.trackeat.util.PreferenceHelper
 import com.trackeat.imamf.trackeat.util.PreferenceHelper.set
 import kotlinx.android.synthetic.main.activity_register.*
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -47,16 +50,20 @@ class RegisterActivity : AppCompatActivity() {
         val email = editTextEmail.text.toString().trim()
         val nama = editTextNamaLengkap.text.toString().trim()
         val tanggalLahir = editTextTanggalLahir.text.toString().trim()
-        val tinggiBadan = editTextTinggiBadan.text.toString().trim()
-        val beratBadan = editTextBeratBadan.text.toString().trim()
+        val tinggiBadan = editTextTinggiBadan.text.toString().toDouble()
+        val beratBadan = editTextBeratBadan.text.toString().toDouble()
         val password = editTextPassword.text.toString().trim()
         val confirmPassword = editTextKonfirmasiPassword.text.toString().trim()
         val checkedRadioButtonId = radioGroupJenisKelamin.checkedRadioButtonId
         val jenisKelaminRadioButton = findViewById<RadioButton>(checkedRadioButtonId)
         val jenisKelamin = jenisKelaminRadioButton.text.toString().trim()
+
+        val usia = calculateAge(tanggalLahir)
+        val kebutuhanKalori = calculateCalories(jenisKelamin, tinggiBadan, beratBadan, usia)
+
         if (inputDataNotEmpty(email, nama, password, confirmPassword, tanggalLahir, tinggiBadan, beratBadan, jenisKelamin)) {
             if (password.equals(confirmPassword)) {
-                registerUser(email, nama, password, tanggalLahir, tinggiBadan, beratBadan, jenisKelamin)
+                registerUser(email, nama, password, tanggalLahir, tinggiBadan, beratBadan, jenisKelamin, usia, kebutuhanKalori)
             } else {
                 toast("Kata sandi tidak cocok")
             }
@@ -66,14 +73,14 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     // Register user to firebase
-    private fun registerUser(email: String, nama: String, password: String, tanggalLahir: String, tinggiBadan: String, beratBadan: String, jenisKelamin: String) {
+    private fun registerUser(email: String, nama: String, password: String, tanggalLahir: String, tinggiBadan: Double, beratBadan: Double, jenisKelamin: String, usia: Int, kebutuhanKalori: Double) {
         startLoadingIndicator()
         mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 toast("Register berhasil")
                 val userId = mFirebaseAuth.currentUser!!.uid
                 val photoUrl = DEFAULT_NOT_SET
-                val newUser = User(userId, nama, email, tanggalLahir, jenisKelamin, tinggiBadan, beratBadan, photoUrl)
+                val newUser = User(userId, nama, email, tanggalLahir, jenisKelamin, tinggiBadan, beratBadan, kebutuhanKalori, usia, photoUrl)
                 // send user data to firebase database
                 mDatabaseReference.child(userId).setValue(newUser).addOnCompleteListener {
                     stopLoadingIndicator()
@@ -120,19 +127,38 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun inputDataNotEmpty(email: String, nama: String, password: String, confirmPassword: String, tanggalLahir: String, tinggiBadan: String, beratBadan: String, jenisKelamin: String): Boolean {
+    private fun inputDataNotEmpty(email: String, nama: String, password: String, confirmPassword: String, tanggalLahir: String, tinggiBadan: Double, beratBadan: Double, jenisKelamin: String): Boolean {
         return !(TextUtils.isEmpty(email) || TextUtils.isEmpty(nama) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) ||
-                TextUtils.isEmpty(tanggalLahir) || TextUtils.isEmpty(tinggiBadan) || TextUtils.isEmpty(beratBadan) || TextUtils.isEmpty(jenisKelamin))
+                TextUtils.isEmpty(tanggalLahir) || TextUtils.isEmpty(tinggiBadan.toString()) || TextUtils.isEmpty(beratBadan.toString()) || TextUtils.isEmpty(jenisKelamin))
     }
 
     // Progress bar
     private fun startLoadingIndicator() {
-        viewDimScreen.visibility = View.VISIBLE
         aviLoadingIndicatorView.smoothToShow()
     }
 
     private fun stopLoadingIndicator() {
-        viewDimScreen.visibility = View.GONE
         aviLoadingIndicatorView.smoothToHide()
+    }
+
+    private fun calculateAge(tanggalLahir: String): Int {
+        val currentDate = Calendar.getInstance().time
+        val birthDate = SimpleDateFormat("dd/MM/yyyy").parse(tanggalLahir)
+        val formatter = SimpleDateFormat("yyyyMMdd")
+        val date1 = Integer.parseInt(formatter.format(birthDate))
+        val date2 = Integer.parseInt(formatter.format(currentDate))
+        return (date2 - date1) / 10000
+    }
+
+    private fun calculateCalories(jenisKelamin: String, tinggiBadan: Double, beratBadan: Double, usia: Int): Double {
+        if (jenisKelamin.equals("Laki-Laki")) {
+            val bmr = 88.362 + (13.397 * beratBadan) + (4.799 * tinggiBadan) - (5.677 * usia)
+            val tee = bmr * 1.375
+            return tee
+        } else {
+            val bmr = 447.593 + (9.247 * beratBadan) + (3.098 * tinggiBadan) - (4.33 * usia)
+            val tee = bmr * 1.375
+            return tee
+        }
     }
 }

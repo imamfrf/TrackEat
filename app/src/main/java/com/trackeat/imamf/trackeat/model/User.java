@@ -7,14 +7,16 @@ public class User {
     private String email;
     private String tanggalLahir;
     private String jenisKelamin;
-    private String tinggiBadan;
-    private String beratBadan;
+    private double tinggiBadan;
+    private double beratBadan;
+    private double kebutuhanKalori;
+    private int usia;
     private String photoUrl;
 
     public User() {
     }
 
-    public User(String userId, String nama, String email, String tanggalLahir, String jenisKelamin, String tinggiBadan, String beratBadan, String photoUrl) {
+    public User(String userId, String nama, String email, String tanggalLahir, String jenisKelamin, double tinggiBadan, double beratBadan, double kebutuhanKalori, int usia, String photoUrl) {
         this.userId = userId;
         this.nama = nama;
         this.email = email;
@@ -22,6 +24,8 @@ public class User {
         this.jenisKelamin = jenisKelamin;
         this.tinggiBadan = tinggiBadan;
         this.beratBadan = beratBadan;
+        this.kebutuhanKalori = kebutuhanKalori;
+        this.usia = usia;
         this.photoUrl = photoUrl;
     }
 
@@ -73,19 +77,35 @@ public class User {
         this.jenisKelamin = jenisKelamin;
     }
 
-    public String getTinggiBadan() {
+    public double getTinggiBadan() {
         return tinggiBadan;
     }
 
-    public void setTinggiBadan(String tinggiBadan) {
+    public void setTinggiBadan(double tinggiBadan) {
         this.tinggiBadan = tinggiBadan;
     }
 
-    public String getBeratBadan() {
+    public double getBeratBadan() {
         return beratBadan;
     }
 
-    public void setBeratBadan(String beratBadan) {
+    public void setBeratBadan(double beratBadan) {
         this.beratBadan = beratBadan;
+    }
+
+    public double getKebutuhanKalori() {
+        return kebutuhanKalori;
+    }
+
+    public void setKebutuhanKalori(double kebutuhanKalori) {
+        this.kebutuhanKalori = kebutuhanKalori;
+    }
+
+    public int getUsia() {
+        return usia;
+    }
+
+    public void setUsia(int usia) {
+        this.usia = usia;
     }
 }
