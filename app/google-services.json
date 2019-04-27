@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "492309486079",
+    "firebase_url": "https://trackeat-6b1e4.firebaseio.com",
+    "project_id": "trackeat-6b1e4",
+    "storage_bucket": "trackeat-6b1e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492309486079:android:afdedee5c2f47d28",
+        "android_client_info": {
+          "package_name": "com.trackeat.imamf.trackeat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "492309486079-lbneot23hc133ee698db6tplgqc577qq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trackeat.imamf.trackeat",
+            "certificate_hash": "355fac96883d48e12beeccac3d4ff38071b5e793"
+          }
+        },
+        {
+          "client_id": "492309486079-m5idhsc47jdhb50ceb50cipfhaf3hcrm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByq-nuRyytaf5DCk5O8AXYcXpTPokFf28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "492309486079-m5idhsc47jdhb50ceb50cipfhaf3hcrm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
