@@ -79,7 +79,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/tanggalLahir"
             android:inputType="date"
-            android:textColor="@color/md_white_1000" />
+            android:textColor="@color/md_white_1000"
+            android:focusable="false"/>
 
     </android.support.design.widget.TextInputLayout>
 

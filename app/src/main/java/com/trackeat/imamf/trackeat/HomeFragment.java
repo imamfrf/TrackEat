@@ -81,10 +81,16 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         aviLoadingIndicatorView = inflate.findViewById(R.id.aviLoadingIndicatorView);
 
 
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String formattedDate = df.format(c);
+        Log.d("tanggal", formattedDate);
+
 
         //firebase
         db = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
+       // db.getReference("users").child(auth.getUid()).child("daily").child(formattedDate).setValue(0);
 
         db.getReference("users").child(auth.getCurrentUser().getUid()).child("kebutuhanKalori")
                 .addValueEventListener(new ValueEventListener() {
@@ -99,10 +105,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                     }
                 });
 
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        final String formattedDate = df.format(c);
-        Log.d("tanggal", formattedDate);
+
         try{
 
             db.getReference("users").child(auth.getCurrentUser().getUid()).child("daily").child(formattedDate)
@@ -218,6 +221,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                     i.putExtra("productName", result.getImages().get(0).getClassifiers().get(0).getClasses().get(0).getClassName());
                     //i.putExtra("imgSrc", imgSrc);
                     startActivity(i);
+                    getActivity().finish();
                 } else {
                     Toast.makeText(getActivity(), "Mohon maaf makanan belum dikenali", Toast.LENGTH_SHORT).show();
                 }
