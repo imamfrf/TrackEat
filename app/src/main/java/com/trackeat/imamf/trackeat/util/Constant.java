@@ -6,6 +6,8 @@ public interface Constant {
 
         String CHILD_USERS = "users";
 
+        String CHILD_MAKANAN = "makananKatering";
+
     }
 
     interface DEFAULT {
@@ -20,13 +22,11 @@ public interface Constant {
 
     interface KEY {
 
-        String KEY_ID_CATEGORY = "KEY_ID_CATEGORY";
+        String KEY_ID_MAKANAN = "KEY_ID_CATERING";
 
-        String KEY_NAMA_CATEGORY = "KEY_NAMA_CATEGORY";
+        String KEY_NAMA_CATERING = "KEY_NAMA_CATERING";
 
-        String KEY_ID_EVENT = "KEY_ID_EVENT";
-
-        String KEY_NAMA_EVENT = "KEY_NAMA_EVENT";
+        String KEY_NAMA_MAKANAN = "KEY_NAMA_MAKANAN";
 
     }
 

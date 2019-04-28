@@ -51,11 +51,16 @@ dependencies {
     //gatau apaan
     implementation 'com.android.support:multidex:1.0.3'
 
+    //google play services
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.android.gms:play-services-places:16.0.0'
+
     //progress chart
     implementation 'com.timqi.sectorprogressview:library:2.0.1'
     implementation 'joda-time:joda-time:2.9.4'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v2.0.9'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
 apply plugin: 'com.google.gms.google-services'
 repositories {
