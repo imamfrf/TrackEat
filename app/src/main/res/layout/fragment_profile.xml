@@ -7,10 +7,21 @@
     android:fillViewport="true"
     tools:context=".ProfileFragment">
 
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/md_white_1000">
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_cals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayoutProfile"
@@ -67,6 +78,17 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/bt_log_out"
+                android:layout_width="75dp"
+                android:layout_height="31dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/rounded_button_logout"
+                android:text="Logout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </android.support.constraint.ConstraintLayout>
 
         <LinearLayout
@@ -89,6 +111,7 @@
                 android:textSize="22sp" />
 
             <TextView
+                android:id="@+id/tv_avg_cal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

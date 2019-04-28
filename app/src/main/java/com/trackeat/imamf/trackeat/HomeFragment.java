@@ -44,7 +44,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
     private ColorfulRingProgressView crpv;
     private FirebaseDatabase db;
     private FirebaseAuth auth;
-    private TextView tv_cal_consumed, tv_cal_needed, tv_percent;
+    private TextView tv_cal_consumed, tv_cal_needed, tv_percent, tv_cal_diff;
     private float cal_consumed = 0.0f;
 
 
@@ -60,6 +60,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         tv_cal_consumed = inflate.findViewById(R.id.tv_cal_consumed);
         tv_cal_needed = inflate.findViewById(R.id.tv_cal_need);
         tv_percent = inflate.findViewById(R.id.tv_percent);
+        tv_cal_diff = inflate.findViewById(R.id.tv_cal_diff);
 
 //        layout_pBar = inflate.findViewById(R.id.layout_pBar);
 //        layout_pBar.setVisibility(View.GONE);
@@ -102,32 +103,55 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String formattedDate = df.format(c);
         Log.d("tanggal", formattedDate);
-        db.getReference("users").child(auth.getCurrentUser().getUid()).child("daily").child(formattedDate)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        tv_cal_consumed.setText(dataSnapshot.getValue().toString());
-                    }
+        try{
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+            db.getReference("users").child(auth.getCurrentUser().getUid()).child("daily").child(formattedDate)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            tv_cal_consumed.setText(dataSnapshot.getValue().toString());
+                            float cal_consumed = Float.valueOf(tv_cal_consumed.getText().toString());
+                            float cal_must = Float.valueOf(tv_cal_needed.getText().toString());
 
-                    }
-                });
+                            float percent = (cal_consumed/cal_must)*100;
 
-        float cal_consumed = Float.valueOf(tv_cal_consumed.getText().toString());
-        float cal_must = Float.valueOf(tv_cal_needed.getText().toString());
+                            double diff = cal_must - cal_consumed;
+                            tv_cal_diff.setText(String.format("%.0f", diff));
+                            //circle chart
+                            crpv = inflate.findViewById(R.id.crpv);
+                            //crpv.setPercent(75);
+                            crpv.setStartAngle(0);
+                            crpv.setPercent(percent);
 
-        float percent = (cal_consumed/cal_must)*100;
+                            tv_percent.setText(String.format("%.0f", percent));
+                        }
 
-        //circle chart
-        crpv = inflate.findViewById(R.id.crpv);
-        //crpv.setPercent(75);
-        crpv.setStartAngle(0);
-        crpv.setPercent(percent);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-        tv_percent.setText(String.format("%.0f", percent));
+                        }
+                    });
 
+
+        }
+        catch (Exception e){
+            db.getReference("users").child(auth.getCurrentUser().getUid()).child("daily").child(formattedDate)
+                    .setValue(0);
+            float cal_consumed = 0.0f;
+            float cal_must = Float.valueOf(tv_cal_needed.getText().toString());
+
+            float percent = (cal_consumed/cal_must)*100;
+            //circle chart
+            crpv = inflate.findViewById(R.id.crpv);
+            //crpv.setPercent(75);
+            crpv.setStartAngle(0);
+            crpv.setPercent(percent);
+
+            tv_percent.setText(String.format("%.0f", percent));
+
+            double diff = cal_must - cal_consumed;
+            tv_cal_diff.setText(String.format("%.0f", diff));
+        }
         return inflate;
     }
 
