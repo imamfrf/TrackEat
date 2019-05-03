@@ -1,13 +1,17 @@
 package com.trackeat.imamf.trackeat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -23,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.trackeat.imamf.trackeat.model.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 import static com.trackeat.imamf.trackeat.util.Constant.CHILD.CHILD_USERS;
 
@@ -31,9 +37,17 @@ public class ProfileFragment extends Fragment {
     private TextView mTextViewNamaLengkap;
     private TextView mTextViewEmail;
     private TextView mTextViewUsia;
+    private TextView tv_avg_cal;
+
+    private Button bt_logout;
 
     private DatabaseReference mDatabaseReference;
+    private FirebaseAuth auth;
     private String mUserId;
+    private HashMap<String, String> weekly;
+    private ArrayList<String> arr = new ArrayList<>();
+    private ArrayList<Double> arr1 = new ArrayList<>();
+
 
     @Nullable
     @Override
@@ -41,13 +55,31 @@ public class ProfileFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
+
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        weekly = new HashMap<>();
 
         mTextViewNamaLengkap = view.findViewById(R.id.textViewNamaLengkap);
         mTextViewEmail = view.findViewById(R.id.textViewEmail);
         mTextViewUsia = view.findViewById(R.id.textViewUsia);
+        tv_avg_cal = view.findViewById(R.id.tv_avg_cal);
+
+        auth = FirebaseAuth.getInstance();
+
+        bt_logout = view.findViewById(R.id.bt_log_out);
+
+        bt_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                auth.signOut();
+                Intent i = new Intent(getActivity(), LoginActivity.class);
+                startActivity(i);
+                getActivity().finish();
+            }
+        });
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child(CHILD_USERS);
         mUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -69,6 +101,46 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        mDatabaseReference.child(mUserId).child("daily").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                double sum = 0;
+                int count = 1;
+                for (DataSnapshot sn : dataSnapshot.getChildren()){
+                    sum += Double.valueOf(String.valueOf(sn.getValue()));
+                    count++;
+                }
+                double avg = sum / count;
+                tv_avg_cal.setText(String.format("%.2f", avg)+" kal");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        mDatabaseReference.child(mUserId).child("daily").addValueEventListener(new ValueEventListener() {
+            String date = "";
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<String> date = new ArrayList<>();
+                ArrayList<Double> cal = new ArrayList<>();
+
+                for (DataSnapshot sn : dataSnapshot.getChildren()){
+                    date.add(sn.getKey());
+                    cal.add(Double.valueOf(sn.getValue().toString()));
+                }
+                fetch(date, cal);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         BarChart chart = view.findViewById(R.id.barChart);
         BarData data = new BarData(getXAxisValues(), getDataSet());
         chart.setData(data);
@@ -77,7 +149,24 @@ public class ProfileFragment extends Fragment {
         chart.setDescription("Diagram Kalori");
         chart.animateXY(2000, 2000);
         chart.invalidate();
+
+
+       // Log.d("fetch", fetch().toString());
     }
+
+    public ArrayList<String> fetch(ArrayList<String> date, ArrayList<Double> cal){
+       // arr = new ArrayList<>();
+//        arr1 = new ArrayList<>();
+
+        for (int i = 0; i < date.size(); i++){
+            arr.add(date.get(i));
+            arr1.add(cal.get(i));
+        }
+        Log.d("fetchh", arr.get(0).toString());
+        Log.d("fettt", String.valueOf(arr.size()));
+        return  arr;
+    }
+
 
     private ArrayList<BarDataSet> getDataSet() {
         ArrayList<BarDataSet> dataSets = null;
@@ -131,4 +220,28 @@ public class ProfileFragment extends Fragment {
         xAxis.add("Sab");
         return xAxis;
     }
-}
+//        db.getReference("users").child(auth.getUid()).child("daily").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                int i = 0;
+//                for (DataSnapshot sn : dataSnapshot.getChildren()){
+//                    Log.d("aduh", sn.getKey());
+//                    xAxis.add(sn.getKey());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//        xAxis.add("Sen");
+//        xAxis.add("Sel");
+//        xAxis.add("Rab");
+//        xAxis.add("Kam");
+//        xAxis.add("Jum");
+//        xAxis.add("Sab");
+//        xAxis.add("Min");
+       // return xAxis;
+    }
+

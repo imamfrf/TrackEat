@@ -31,7 +31,7 @@ public class FoodDetailActivity extends AppCompatActivity {
     private FirebaseDatabase db;
     private String nama;
     private float cals, fat, carbs, pro;
-    private TextView tv_cals, tv_fat, tv_carbs, tv_pro;
+    private TextView tv_cals, tv_fat, tv_carbs, tv_pro, tv_cal_dtl, tv_cal_need_dtl;
     private ImageView img_food;
     private Button bt_makan;
     private FirebaseAuth auth;
@@ -60,6 +60,8 @@ public class FoodDetailActivity extends AppCompatActivity {
         tv_fat = findViewById(R.id.tv_fat_detail);
         tv_carbs = findViewById(R.id.tv_carb_detail);
         tv_pro = findViewById(R.id.tv_pro_detail);
+        tv_cal_dtl = findViewById(R.id.tv_cal_dtl);
+        tv_cal_need_dtl = findViewById(R.id.tv_cal_need_dtl);
 
         bt_makan = findViewById(R.id.bt_makan);
 
@@ -96,6 +98,21 @@ public class FoodDetailActivity extends AppCompatActivity {
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String formattedDate = df.format(c);
+
+        db.getReference("users").child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                tv_cal_need_dtl.setText(String.valueOf(dataSnapshot.child("kebutuhanKalori").getValue()));
+                tv_cal_dtl.setText(String.valueOf(dataSnapshot.child("daily").child(formattedDate).getValue()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         bt_makan.setOnClickListener(new View.OnClickListener() {
             float cal = 0.0f;
             @Override

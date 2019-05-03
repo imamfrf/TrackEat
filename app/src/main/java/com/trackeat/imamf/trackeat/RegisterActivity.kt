@@ -21,12 +21,17 @@ import com.trackeat.imamf.trackeat.util.PreferenceHelper.set
 import kotlinx.android.synthetic.main.activity_register.*
 import java.text.SimpleDateFormat
 import java.util.*
+import android.app.DatePickerDialog
+import android.widget.DatePicker
+import android.widget.EditText
 
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var mFirebaseAuth: FirebaseAuth
     private lateinit var mDatabaseReference: DatabaseReference
+    var cal = Calendar.getInstance()
+    var et_tglLhr: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +48,38 @@ class RegisterActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signOut()
             finish()
         }
+
+        // create an OnDateSetListener
+        val dateSetListener = object : DatePickerDialog.OnDateSetListener {
+            override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int,
+                                   dayOfMonth: Int) {
+                cal.set(Calendar.YEAR, year)
+                cal.set(Calendar.MONTH, monthOfYear)
+                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                updateDateInView()
+            }
+        }
+
+        // when you click on the button, show DatePickerDialog that is set with OnDateSetListener
+        editTextTanggalLahir.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View) {
+                DatePickerDialog(this@RegisterActivity,
+                        dateSetListener,
+                        // set DatePickerDialog to point to today's date when it loads up
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)).show()
+            }
+
+        })
     }
+
+    private fun updateDateInView() {
+        val myFormat = "MM/dd/yyyy" // mention the format you need
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        editTextTanggalLahir.setText(sdf.format(cal.getTime()))
+    }
+
 
     // Check input field and register if valid
     private fun validateInput() {
