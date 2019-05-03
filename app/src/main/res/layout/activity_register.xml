@@ -8,16 +8,6 @@
     android:background="@drawable/gradient_background_selector"
     tools:context=".RegisterActivity">
 
-    <View
-        android:id="@+id/viewDimScreen"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#33000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <!--<ImageView-->
     <!--android:id="@+id/imageViewLogo"-->
     <!--android:layout_width="0dp"-->
@@ -89,7 +79,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/tanggalLahir"
             android:inputType="date"
-            android:textColor="@color/md_white_1000" />
+            android:textColor="@color/md_white_1000"
+            android:focusable="false"/>
 
     </android.support.design.widget.TextInputLayout>
 

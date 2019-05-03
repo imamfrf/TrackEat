@@ -1,21 +1,16 @@
 package com.trackeat.imamf.trackeat;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.ibm.watson.developer_cloud.android.library.camera.CameraHelper;
+import com.trackeat.imamf.trackeat.BeliFragment.BeliFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -35,18 +30,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFrg()).commit();
 
 
-
-
-
-
     }
 
     public boolean loadFragment(android.support.v4.app.Fragment fragment) {
-       // if (fragment != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-            return true;
+        // if (fragment != null) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        return true;
         //}
-       // return false;
+        // return false;
     }
 
     @Override
@@ -58,6 +49,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 fragment = new HomeFragment();
+                loadFragment(fragment);
+                break;
+            case R.id.navigation_recommend:
+                fragment = new BeliFragment();
+                loadFragment(fragment);
+                break;
+            case R.id.navigation_profile:
+                fragment = new ProfileFragment();
                 loadFragment(fragment);
                 break;
         }

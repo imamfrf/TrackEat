@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="32dp"
-            android:text="malam"
+            android:text="siang"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -68,14 +68,12 @@
             android:id="@+id/tv_greet3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="68dp"
             android:text="Imam"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_greet2"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -97,7 +95,7 @@
             android:layout_height="74dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_button_scan"
-            android:drawableTop="@drawable/ic_person_black_24dp"
+            android:drawableTop="@drawable/ic_scan_24"
             android:text="Scan Makanan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,11 +103,193 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/constraintLayout"
+        android:background="@color/md_white_1000"
+        tools:layout_editor_absoluteY="234dp">
+
+        <com.timqi.sectorprogressview.ColorfulRingProgressView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/crpv"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            app:bgColor="#e1e1e1"
+            app:fgColorEnd="@color/colorPrimaryDark"
+            app:fgColorStart="@color/colorPrimaryDarker"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:percent="75"
+            app:startAngle="0"
+            app:strokeWidth="10dp" />
+
+        <TextView
+            android:id="@+id/tv_cal_consumed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="900"
+            android:textColor="@android:color/black"
+            android:textSize="30sp"
+            app:layout_constraintStart_toEndOf="@+id/crpv"
+            app:layout_constraintTop_toTopOf="@+id/crpv" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="/"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/tv_cal_consumed"
+            app:layout_constraintTop_toTopOf="@+id/tv_cal_consumed" />
+
+        <TextView
+            android:id="@+id/tv_cal_need"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="20dp"
+            android:text="2200"
+            android:textColor="@color/md_grey_800"
+            app:layout_constraintStart_toEndOf="@+id/textView4"
+            app:layout_constraintTop_toTopOf="@+id/tv_cal_consumed" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Kalori"
+            android:textColor="@color/md_blue_grey_700"
+            app:layout_constraintStart_toEndOf="@+id/tv_cal_need"
+            app:layout_constraintTop_toTopOf="@+id/tv_cal_need" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="12dp"
+            android:text="Ayo, tinggal"
+            android:textColor="@color/md_black_1000"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_cal_consumed"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cal_need" />
+
+        <TextView
+            android:id="@+id/tv_cal_diff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="8dp"
+            android:text="1300"
+            android:textColor="@color/md_black_1000"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_cal_consumed"
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="kalori lagi!"
+            android:textColor="@color/md_black_1000"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/tv_cal_diff"
+            app:layout_constraintTop_toTopOf="@+id/tv_cal_diff" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="156dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="170dp"
+            android:text="Kalori harian mu"
+            android:textColor="@color/md_black_1000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="24dp"
+            android:text="75"
+            android:textColor="@color/md_black_1000"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/crpv"
+            app:layout_constraintEnd_toEndOf="@+id/crpv"
+            app:layout_constraintStart_toStartOf="@+id/crpv"
+            app:layout_constraintTop_toTopOf="@+id/crpv" />
+
+        <TextView
+            android:id="@+id/tv_percentSym"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="%"
+            android:textColor="@color/md_black_1000"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/crpv"
+            app:layout_constraintStart_toEndOf="@+id/tv_percent"
+            app:layout_constraintTop_toTopOf="@+id/crpv"
+            app:layout_constraintVertical_bias="0.507" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/constraintLayout2">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Tips Sehat"
+            android:textColor="@color/primaryBlack"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_tips_sehat_1" />
+
+                <include layout="@layout/item_tips_sehat_2" />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/layout_pBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/constraintLayout"
-        android:background="@color/white_trans">
+        android:layout_below="@+id/constraintLayout">
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/aviLoadingIndicatorView"
