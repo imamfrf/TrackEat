@@ -2,6 +2,7 @@ package com.trackeat.imamf.trackeat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.ibm.watson.developer_cloud.visual_recognition.v3.VisualRecognition;
 import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ClassifiedImages;
 import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ClassifyOptions;
 import com.timqi.sectorprogressview.ColorfulRingProgressView;
+import com.trackeat.imamf.trackeat.util.PreferenceHelper;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.File;
@@ -44,7 +46,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
     private ColorfulRingProgressView crpv;
     private FirebaseDatabase db;
     private FirebaseAuth auth;
-    private TextView tv_cal_consumed, tv_cal_needed, tv_percent, tv_cal_diff;
+    private TextView tv_cal_consumed, tv_cal_needed, tv_percent, tv_cal_diff, tv_greetings;
     private float cal_consumed = 0.0f;
 
 
@@ -61,6 +63,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         tv_cal_needed = inflate.findViewById(R.id.tv_cal_need);
         tv_percent = inflate.findViewById(R.id.tv_percent);
         tv_cal_diff = inflate.findViewById(R.id.tv_cal_diff);
+        tv_greetings = inflate.findViewById(R.id.tv_greet);
 
 //        layout_pBar = inflate.findViewById(R.id.layout_pBar);
 //        layout_pBar.setVisibility(View.GONE);
@@ -90,8 +93,21 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         //firebase
         db = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
-       // db.getReference("users").child(auth.getUid()).child("daily").child(formattedDate).setValue(0);
 
+
+        db.getReference("users").child(auth.getCurrentUser().getUid()).child("nama")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        tv_greetings.setText(getString(R.string.greetings, dataSnapshot.getValue()));
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
         db.getReference("users").child(auth.getCurrentUser().getUid()).child("kebutuhanKalori")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -109,15 +125,20 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         try{
 
             db.getReference("users").child(auth.getCurrentUser().getUid()).child("daily").child(formattedDate)
-                    .addValueEventListener(new ValueEventListener() {
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            tv_cal_consumed.setText(dataSnapshot.getValue().toString());
+                            if (dataSnapshot.getValue() != null){
+                                tv_cal_consumed.setText(dataSnapshot.getValue().toString());
+                            }
+                            else {
+                                tv_cal_consumed.setText("0");
+                            }
+
                             float cal_consumed = Float.valueOf(tv_cal_consumed.getText().toString());
                             float cal_must = Float.valueOf(tv_cal_needed.getText().toString());
 
                             float percent = (cal_consumed/cal_must)*100;
-
                             double diff = cal_must - cal_consumed;
                             tv_cal_diff.setText(String.format("%.0f", diff));
                             //circle chart
@@ -127,6 +148,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                             crpv.setPercent(percent);
 
                             tv_percent.setText(String.format("%.0f", percent));
+
                         }
 
                         @Override

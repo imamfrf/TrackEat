@@ -20,4 +20,5 @@
     <string name="deskripsi">Deskripsi</string>
     <string name="kalori">Kalori</string>
     <string name="namaKatering">Nama Katering</string>
+    <string name="greetings">Hai, %1s !</string>
 </resources>

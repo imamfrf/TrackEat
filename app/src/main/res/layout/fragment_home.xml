@@ -27,55 +27,18 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="68dp"
-            android:layout_marginTop="32dp"
-            android:text="Selamat"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/tv_greet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:layout_marginTop="32dp"
-            android:text="siang"
+            android:text="@string/greetings"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_greet2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text=","
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/tv_greet"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_greet3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:text="Imam"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/tv_greet2"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_greet4"
@@ -131,10 +94,11 @@
             android:id="@+id/tv_cal_consumed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="32dp"
             android:text="900"
             android:textColor="@android:color/black"
             android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/crpv"
             app:layout_constraintStart_toEndOf="@+id/crpv"
             app:layout_constraintTop_toTopOf="@+id/crpv" />
 
@@ -181,7 +145,8 @@
             android:textColor="@color/md_black_1000"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/tv_cal_consumed"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cal_need" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_cal_need"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tv_cal_diff"
@@ -193,7 +158,8 @@
             android:textColor="@color/md_black_1000"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/tv_cal_consumed"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            app:layout_constraintTop_toBottomOf="@+id/textView9"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/textView11"
@@ -204,7 +170,9 @@
             android:textColor="@color/md_black_1000"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/tv_cal_diff"
-            app:layout_constraintTop_toTopOf="@+id/tv_cal_diff" />
+            app:layout_constraintTop_toTopOf="@+id/tv_cal_diff"
+            android:visibility="gone"
+            />
 
         <TextView
             android:id="@+id/textView12"
