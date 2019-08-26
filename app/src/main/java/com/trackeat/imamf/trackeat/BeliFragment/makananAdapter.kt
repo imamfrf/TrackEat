@@ -35,6 +35,7 @@ class makananAdapter(
         } else {
             Picasso.get().load(firstPhotoUrl).into(holder.imageViewThumbnail)
         }
+
         holder.buttonBuy.setOnClickListener {
             listener.onBuyClick(item.idMakanan)
         }
