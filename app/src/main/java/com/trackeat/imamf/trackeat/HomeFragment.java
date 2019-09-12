@@ -110,6 +110,22 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                             double diff = cal_must - cal_consumed;
                             tv_cal_diff.setText(String.format("%.0f", diff));
                         }
+                        else{
+                            float cal_consumed = Float.valueOf(dataSnapshot.child(formattedDate).getValue().toString());
+                            float cal_must = Float.valueOf(tv_cal_needed.getText().toString());
+
+                            float percent = (cal_consumed / cal_must) * 100;
+                            //circle chart
+                            crpv = inflate.findViewById(R.id.crpv);
+                            //crpv.setPercent(75);
+                            crpv.setStartAngle(0);
+                            crpv.setPercent(percent);
+
+                            tv_percent.setText(String.format("%.0f", percent));
+
+                            double diff = cal_must - cal_consumed;
+                            tv_cal_diff.setText(String.format("%.0f", diff));
+                        }
                     }
 
                     @Override
