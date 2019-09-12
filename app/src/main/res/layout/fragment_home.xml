@@ -249,6 +249,7 @@
                 <include layout="@layout/item_tips_sehat_1" />
 
                 <include layout="@layout/item_tips_sehat_2" />
+
             </LinearLayout>
         </HorizontalScrollView>
     </android.support.constraint.ConstraintLayout>

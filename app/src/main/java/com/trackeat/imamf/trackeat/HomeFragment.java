@@ -65,18 +65,8 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         tv_cal_diff = inflate.findViewById(R.id.tv_cal_diff);
         tv_greetings = inflate.findViewById(R.id.tv_greet);
 
-//        layout_pBar = inflate.findViewById(R.id.layout_pBar);
-//        layout_pBar.setVisibility(View.GONE);
-
         //initializin IBM Visual Recognition camera helper
         camHelper = new CameraHelper(getActivity());
-
-        bt_scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                camHelper.dispatchTakePictureIntent();
-            }
-        });
 
         //loading
         viewDimScreen = inflate.findViewById(R.id.viewDimScreen);
@@ -93,6 +83,41 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         //firebase
         db = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
+
+        db.getReference("users").child(auth.getCurrentUser().getUid()).child("daily")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.child(formattedDate).getValue() == null) {
+                            //tv_cal_consumed?.text = p1.child(formattedDate).value.toString()
+                            db.getReference("users").child(auth.getCurrentUser().getUid())
+                                    .child("daily").child(formattedDate)
+                                    .setValue(0);
+
+                            float cal_consumed = 0.0f;
+                            float cal_must = Float.valueOf(tv_cal_needed.getText().toString());
+
+                            float percent = (cal_consumed / cal_must) * 100;
+                            //circle chart
+                            crpv = inflate.findViewById(R.id.crpv);
+                            //crpv.setPercent(75);
+                            crpv.setStartAngle(0);
+                            crpv.setPercent(percent);
+
+                            tv_percent.setText(String.format("%.0f", percent));
+
+                            double diff = cal_must - cal_consumed;
+                            tv_cal_diff.setText(String.format("%.0f", diff));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+
+                });
 
 
         db.getReference("users").child(auth.getCurrentUser().getUid()).child("nama")
@@ -121,62 +146,14 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                     }
                 });
 
-
-        try{
-
-            db.getReference("users").child(auth.getCurrentUser().getUid()).child("daily").child(formattedDate)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null){
-                                tv_cal_consumed.setText(dataSnapshot.getValue().toString());
-                            }
-                            else {
-                                tv_cal_consumed.setText("0");
-                            }
-
-                            float cal_consumed = Float.valueOf(tv_cal_consumed.getText().toString());
-                            float cal_must = Float.valueOf(tv_cal_needed.getText().toString());
-
-                            float percent = (cal_consumed/cal_must)*100;
-                            double diff = cal_must - cal_consumed;
-                            tv_cal_diff.setText(String.format("%.0f", diff));
-                            //circle chart
-                            crpv = inflate.findViewById(R.id.crpv);
-                            //crpv.setPercent(75);
-                            crpv.setStartAngle(0);
-                            crpv.setPercent(percent);
-
-                            tv_percent.setText(String.format("%.0f", percent));
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+        bt_scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                camHelper.dispatchTakePictureIntent();
+            }
+        });
 
 
-        }
-        catch (Exception e){
-            db.getReference("users").child(auth.getCurrentUser().getUid()).child("daily").child(formattedDate)
-                    .setValue(0);
-            float cal_consumed = 0.0f;
-            float cal_must = Float.valueOf(tv_cal_needed.getText().toString());
-
-            float percent = (cal_consumed/cal_must)*100;
-            //circle chart
-            crpv = inflate.findViewById(R.id.crpv);
-            //crpv.setPercent(75);
-            crpv.setStartAngle(0);
-            crpv.setPercent(percent);
-
-            tv_percent.setText(String.format("%.0f", percent));
-
-            double diff = cal_must - cal_consumed;
-            tv_cal_diff.setText(String.format("%.0f", diff));
-        }
         return inflate;
     }
 
@@ -222,14 +199,6 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                 ClassifiedImages result = visualRecognition.classify(classifyOptions).execute();
 
                 Log.d("nasgor", result.toString());
-
-//                productName = result.getImages().get(0).getClassifiers().get(0).getClasses().get(0).getClassName();
-//                if (productName.equalsIgnoreCase("Apel")){
-//                    imgSrc = "https://doktersehat.com/wp-content/uploads/2014/05/apel.jpg";
-//                }
-//                else if (productName.equalsIgnoreCase("Kol")){
-//                    imgSrc = "https://blue.kumparan.com/kumpar/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1521360707/raxkgzgrt44iiebd0krw.jpg";
-//                }
 
 
                 if (result.getImages().get(0).getClassifiers().get(0).getClasses().get(0).getClassName() != null) {
